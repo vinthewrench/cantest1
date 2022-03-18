@@ -11,10 +11,10 @@ set(SOURCES
 	src/CanClient.cpp
 )
 
-add_executable(demoserver ${SOURCES})
+add_executable(cantest ${SOURCES})
 
 
-set_target_properties(demoserver PROPERTIES
+set_target_properties(cantest PROPERTIES
 				CXX_STANDARD 17
 				CXX_EXTENSIONS OFF
 				)
