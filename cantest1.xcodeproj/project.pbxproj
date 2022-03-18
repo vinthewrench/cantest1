@@ -29,7 +29,7 @@
 		2E91D08727DD3B9C00B0E083 /* can.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = can.h; sourceTree = "<group>"; };
 		2EFC23EC27E4D7A400DB9D1F /* CanClient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CanClient.cpp; sourceTree = "<group>"; };
 		2EFC23ED27E4D7A400DB9D1F /* CanClient.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CanClient.hpp; sourceTree = "<group>"; };
-		2EFC23F727E4F1D900DB9D1F /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		2EFC23F827E4F5AA00DB9D1F /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 		2EFC23F627E4F1BC00DB9D1F /* Build Stuff */ = {
 			isa = PBXGroup;
 			children = (
-				2EFC23F727E4F1D900DB9D1F /* CMakeLists.txt */,
+				2EFC23F827E4F5AA00DB9D1F /* CMakeLists.txt */,
 			);
 			path = "Build Stuff";
 			sourceTree = "<group>";
