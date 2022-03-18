@@ -31,7 +31,7 @@ include_directories(/usr/include)
 link_directories(/usr/lib)
 target_link_libraries(cantest  PRIVATE Threads::Threads)
 
-target_include_directories(demoserver
+target_include_directories(cantest
 	PRIVATE
 	src
 )
