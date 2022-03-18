@@ -46,7 +46,7 @@
 		2E91D06F27DD3AE200B0E083 = {
 			isa = PBXGroup;
 			children = (
-				2EFC23F627E4F1BC00DB9D1F /* Build Stuff */,
+				2EFC23FA27E50B5A00DB9D1F /*  Build Stuff */,
 				2E91D08627DD3B9C00B0E083 /* macincludes */,
 				2E91D08227DD3B4F00B0E083 /* src */,
 				2E91D07927DD3AE200B0E083 /* Products */,
@@ -79,12 +79,12 @@
 			path = macincludes;
 			sourceTree = "<group>";
 		};
-		2EFC23F627E4F1BC00DB9D1F /* Build Stuff */ = {
+		2EFC23FA27E50B5A00DB9D1F /*  Build Stuff */ = {
 			isa = PBXGroup;
 			children = (
 				2EFC23F827E4F5AA00DB9D1F /* CMakeLists.txt */,
 			);
-			path = "Build Stuff";
+			name = " Build Stuff";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

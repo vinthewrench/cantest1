@@ -14,6 +14,9 @@
 #include "can.h"
 
 #else
+#include <net/if.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
 #include <linux/can.h>
 #include <linux/can/raw.h>
 #endif
@@ -46,7 +49,7 @@ public:
 	~CANClient();
 	
 	bool begin(string port, CANClientProcessor* cb,  int *error = NULL);
-	bool setFilter(struct can_filter filter, int *error = NULL);
+	bool setFilter(canid_t can_id, canid_t can_mask, int *error = NULL);
 	
 	bool sendFrame(uint8_t frameID,  uint8_t* data, size_t dataLen);
  

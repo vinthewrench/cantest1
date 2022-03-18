@@ -13,8 +13,6 @@ CANClient::CANClient(){
 	_isSetup = false;
 	_cb = NULL;
 	_running = false;
-
-	
 }
 
 CANClient::~CANClient(){
@@ -27,14 +25,14 @@ CANClient::~CANClient(){
 
 bool CANClient::begin(string port, CANClientProcessor* cb,  int * errorOut){
  
-//#if defined(__APPLE__)
-//	if(errorOut) *errorOut = ENOTSUP;
-//	return false;
-//#else
+#if defined(__APPLE__)
+	if(errorOut) *errorOut = ENOTSUP;
+	return false;
+#else
 	
 	struct ifreq ifr;
 	struct sockaddr_can addr;
- 	
+	
 	// create a socket
 	_fd = ::socket(PF_CAN, SOCK_RAW, CAN_RAW);
 	if(_fd == -1){
@@ -52,27 +50,33 @@ bool CANClient::begin(string port, CANClientProcessor* cb,  int * errorOut){
 	// fill out Interface request structure
 	memset(&addr, 0, sizeof(addr));
 	addr.can_family = AF_CAN;
- 	addr.can_ifindex = ifr.ifr_ifindex;
+	addr.can_ifindex = ifr.ifr_ifindex;
 	
 	if (::bind(_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
 		if(errorOut) *errorOut = errno;
 		return false;
 	}
 	
+	_cb = cb;
 	_isSetup = true;
-	
+	_running = true;
+
 	_thread = std::thread(&CANClient::run, this);
 
 	return true;
-//#endif
+#endif
 
 };
 
 
-bool CANClient::setFilter(struct can_filter filter,int * errorOut) {
+bool CANClient::setFilter(canid_t can_id, canid_t can_mask,int * errorOut) {
 	
 	if(!_isSetup) return false;
-	 
+
+	 struct can_filter filter;
+	 filter.can_id = can_id;
+	 filter.can_mask = can_mask;
+
 	if (::setsockopt(_fd, SOL_CAN_RAW, CAN_RAW_FILTER,
 						  &filter, sizeof(struct can_filter)) < 0) {
 		if(errorOut) *errorOut = errno;
@@ -96,7 +100,7 @@ bool CANClient::sendFrame(uint8_t frameID,  uint8_t* data, size_t dataLen) {
 	
 	if (write(_fd, &frame,
 				 sizeof(struct can_frame)) != sizeof(struct can_frame)) {
- 		return false;
+		return false;
 	}
 	
 	return true;
@@ -117,6 +121,7 @@ void CANClient::stop(){
 }
 
 void CANClient::run() {
+
 	while(_running){
 
 		/* wait for something to happen on the socket */
@@ -127,12 +132,16 @@ void CANClient::run() {
 		FD_ZERO(&readSet);
 		FD_SET(_fd, &readSet);
  
-		int numReady = select(2, &readSet, NULL, NULL, &selTimeout);
-		if(numReady > 0){
-		
+		int numReady = select(_fd+1, &readSet, NULL, NULL, &selTimeout);
+		if( numReady == -1 ) {
+			perror("select");
+			_running = false;
+		}
+		if (FD_ISSET(_fd, &readSet)){
 			struct can_frame frame;
 
 			size_t nbytes = read(_fd, &frame, sizeof(struct can_frame));
+
 			if(nbytes > 0){
 				if(_cb){
 					_cb->rcvFrame(frame);
@@ -143,6 +152,8 @@ void CANClient::run() {
 			}
 		}
 	}
+	 
+	 
 	
 	// Close all sockets
 	if(_fd > -1){

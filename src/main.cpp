@@ -50,7 +50,8 @@ int main(int argc, const char * argv[]) {
 	CANClient 	can0;
 	
 	can0.begin("can0", &jeep);
-	
+//	can0.setFilter(0x03E6, 0x7ff);
+
 	while(true) {
 		sleep(2);
 	}
